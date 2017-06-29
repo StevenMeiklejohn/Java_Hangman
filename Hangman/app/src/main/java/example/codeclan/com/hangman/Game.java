@@ -9,25 +9,18 @@ public class Game {
 
 
     private Player player;
-    private String word;
-    private ArrayList<Character> correctGuesses;
-    private ArrayList<Character> wrongGuesses;
-    private ArrayList<Character> wordArray;
+    private Word word;
     private Ui ui;
     private Boolean inPlay;
 
 
-    public Game(Player player, String word, Ui ui){
+    public Game(Player player, Word word, Ui ui){
         this.player = player;
         this.word = word;
         this.ui = ui;
         inPlay = true;
-        correctGuesses = new ArrayList<Character>();
-        wrongGuesses = new ArrayList<Character>();
-        wordArray = new ArrayList<Character>();
-        for (char c : word.toCharArray()) {
-            wordArray.add(c);
-        }
+
+
     }
 
     public Player getPlayer(){
@@ -35,24 +28,24 @@ public class Game {
     }
 
     public int getCorrectGuesses() {
-        return correctGuesses.size();
+        return word.getCorrectGuesses().size();
     }
 
     public int getWrongGuesses() {
-        return wrongGuesses.size();
+        return word.getWrongGuesses().size();
     }
 
     public boolean makeGuess (Character letter){
         int multiple = checkMultiple(letter);
-        boolean correct = wordArray.contains(letter);
+        boolean correct = word.getWordArray().contains(letter);
         if (correct){
             for(int i = 0; i < multiple; i++) {
-                correctGuesses.add(letter);
+                word.getCorrectGuesses().add(letter);
             }
             ui.correctGuess();
         }
         else {
-            wrongGuesses.add(letter);
+            word.getWrongGuesses().add(letter);
             ui.wrongGuess();
         }
         return correct;
@@ -62,7 +55,7 @@ public class Game {
 
     public int checkMultiple(char guess){
         int count = 0;
-        for(char c: wordArray){
+        for(char c: word.getWordArray()){
             if(c == guess){
                 count ++;
             }
@@ -72,9 +65,9 @@ public class Game {
 
     public String getFormattedWord(){
         String formatted ="";
-        for (char letter: word.toCharArray()){
+        for (char letter: word.getWord().toCharArray()){
             char display = '_';
-            if(correctGuesses.contains(letter)){
+            if(word.getCorrectGuesses().contains(letter)){
                 display = letter;
             }
             formatted += display;
@@ -85,7 +78,7 @@ public class Game {
 
 
     public Boolean checkWin(){
-        if(this.word.length() == correctGuesses.size()){
+        if(word.getWord().length() == word.getCorrectGuesses().size()){
             ui.win();
             inPlay = false;
             return true;
@@ -96,7 +89,7 @@ public class Game {
     }
 
     public Boolean checkLose(){
-        if(wrongGuesses.size() >= 7){
+        if(word.getWrongGuesses().size() >= 7){
             ui.lose();
             inPlay = false;
             return true;

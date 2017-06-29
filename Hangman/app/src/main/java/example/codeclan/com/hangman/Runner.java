@@ -18,9 +18,10 @@ public class Runner {
         String name = ui.askForName();
 
         ui.clearScreen();
+        Word inputWord = new Word(word);
         Player player = new Player(name);
         ui.welcome(player.getName());
-        Game game = new Game(player, word, ui);
+        Game game = new Game(player, inputWord, ui);
 
 
         ui.progress(game.getFormattedWord());
